@@ -1,0 +1,63 @@
+<extend name="common/iframe"/>
+
+<block name="title">
+</block>
+
+<block name="content">
+    <div id="map"></div>
+    <div class="search">
+        <form action="">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search[address]">
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <if condition="!empty($search)">
+        <script>
+            $("[name='search[address]']").val(`{$search.address}`)
+        </script>
+    </if>
+</block>
+
+<block name="css">
+    <style>
+        .content {
+            padding: 0;
+        }
+
+        #map {
+            height: 100vh;
+        }
+
+        .search {
+            margin: 0 10%;
+            position: fixed;
+            top: 20px;
+        }
+    </style>
+</block>
+
+<block name="js">
+    <script src="//api.map.baidu.com/api?v=2.0&ak={$ak}"></script>
+    <script>
+        const map = new BMap.Map("map")
+        const point = new BMap.Point({$coordinate[0]}, {$coordinate[1]})
+        map.centerAndZoom(point, 18)
+        const marker = new BMap.Marker(point)
+        map.addOverlay(marker)
+        const navigationControl = new BMap.NavigationControl({
+            anchor: BMAP_ANCHOR_TOP_LEFT,
+        })
+        const overviewMapControl = new BMap.OverviewMapControl({
+            isOpen: true,
+            anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        })
+        map.addControl(navigationControl)
+        map.addControl(overviewMapControl)
+    </script>
+</block>

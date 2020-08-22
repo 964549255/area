@@ -1,0 +1,58 @@
+<extend name="common/frame"/>
+
+<block name="title">
+    index
+</block>
+
+<block name="content">
+    <script>
+        $(".nav li").eq(0).addClass("active")
+    </script>
+    <form action="">
+        <input type="hidden" name="id">
+        <table class="table table-bordered">
+            <colgroup>
+                <col width="15%">
+                <col width="35%">
+                <col width="15%">
+                <col width="35%">
+            </colgroup>
+            <tr>
+                <th>应用密钥(服务端)</th>
+                <td>
+                    <input type="text" class="form-control" name="ak_server">
+                </td>
+                <th>应用密钥(浏览器端)</th>
+                <td>
+                    <input type="text" class="form-control" name="ak_browser">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div class="text-right mt20">
+        <button class="btn btn-primary" type="button" onclick="submit()">确认</button>
+    </div>
+    <if condition="!empty($item)">
+        <script>
+            $("[name='id']").val(`{$item.id}`)
+            $("[name='ak_server']").val(`{$item.ak_server}`)
+            $("[name='ak_browser']").val(`{$item.ak_browser}`)
+        </script>
+    </if>
+</block>
+
+<block name="css">
+</block>
+
+<block name="js">
+    <script>
+        function submit() {
+            const data = {
+                id: $("[name='id']").val(),
+                ak_server: $("[name='ak_server']").val(),
+                ak_browser: $("[name='ak_browser']").val()
+            }
+            asynchronous(`{:cmf_plugin_url('Area://admin_area_config/index')}`, data)
+        }
+    </script>
+</block>

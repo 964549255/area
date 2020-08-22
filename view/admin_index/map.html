@@ -1,0 +1,40 @@
+<extend name="common/iframe"/>
+
+<block name="title">
+</block>
+
+<block name="content">
+    <div id="map"></div>
+</block>
+
+<block name="css">
+    <style>
+        .content {
+            padding: 0;
+        }
+
+        #map {
+            height: 100vh;
+        }
+    </style>
+</block>
+
+<block name="js">
+    <script src="//api.map.baidu.com/api?v=2.0&ak={$ak}"></script>
+    <script>
+        const map = new BMap.Map("map")
+        const point = new BMap.Point({$coordinate[0]}, {$coordinate[1]})
+        map.centerAndZoom(point, 18)
+        const marker = new BMap.Marker(point)
+        map.addOverlay(marker)
+        const navigationControl = new BMap.NavigationControl({
+            anchor: BMAP_ANCHOR_TOP_LEFT,
+        })
+        const overviewMapControl = new BMap.OverviewMapControl({
+            isOpen: true,
+            anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        })
+        map.addControl(navigationControl)
+        map.addControl(overviewMapControl)
+    </script>
+</block>
